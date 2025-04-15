@@ -1,0 +1,17 @@
+services:
+  mongo:
+    image: mongo
+    container_name: MongoDB
+    ports:
+      - "27017:27017"
+    env_file:
+      - .env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
+      MONGO_INITDB_DATABASE: ${DB_NAME}
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:

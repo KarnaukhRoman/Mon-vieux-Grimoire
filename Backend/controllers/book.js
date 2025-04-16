@@ -25,7 +25,6 @@ exports.createBook = (req, res, next) => {
     const bookObject = JSON.parse(req.body.book);
     delete bookObject._id;
     delete bookObject.userId;
-    console.log('Auth.userId:', req.body.book);
 
     const book = new Book({
         ...bookObject,

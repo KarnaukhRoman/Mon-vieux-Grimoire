@@ -48,11 +48,11 @@ exports.createBookRating = (req, res, next) => {
     Book.findOne({_id: bookId})
   .then(book => {
     if (!book) {
-      return res.status(404).json({ message: 'Книгу не знайдено' });
+      return res.status(404).json({ message: 'Livre non trouvé' });
     } else {
         const hasAlreadyRated = book.ratings.some(r => r.userId === userId);
         if (hasAlreadyRated){
-            return res.status(400).json({ message: 'Користувач вже оцінив цю книгу.' });
+            return res.status(400).json({ message: 'Utilisateur a déjà évalué ce livre.' });
         } else {
             book.ratings.push({userId, grade: rating})
             const total = book.ratings.reduce((acc, r) => acc + r.grade, 0);
@@ -76,7 +76,7 @@ exports.updateBook = (req, res, next) => {
     Book.findOne({_id: req.params.id})
         .then((book) => {
             if (book.userId != req.auth.userId) {
-                res.status(401).json({ message : 'Not authorized'});
+                res.status(403).json({ message : 'Not authorized'});
             } else {
                 Book.updateOne({ _id: req.params.id}, { ...bookObject, _id: req.params.id})
                 .then(() => res.status(200).json({message : 'Livre mis à jour avec succès'}))
@@ -92,7 +92,7 @@ exports.deleteBook = (req, res, next) => {
     Thing.findOne({ _id: req.params.id})
         .then(book => {
             if (book.userId != req.auth.userId) {
-                res.status(401).json({message: 'Not authorized'});
+                res.status(403).json({message: 'Not authorized'});
             } else {
                 const filename = book.imageUrl.split('/images/')[1];
                 fs.unlink(`images/${filename}`, () => {

@@ -89,7 +89,7 @@ exports.updateBook = (req, res, next) => {
 };
 
 exports.deleteBook = (req, res, next) => {
-    Thing.findOne({ _id: req.params.id})
+    Book.findOne({ _id: req.params.id})
         .then(book => {
             if (book.userId != req.auth.userId) {
                 res.status(403).json({message: 'Not authorized'});
